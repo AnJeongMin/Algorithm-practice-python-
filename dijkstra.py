@@ -51,11 +51,10 @@ def dijkstra(start):
             continue
         for i in graph[now]:
             cost = dist + i[1]
-            if cost < distance[i[0]]:
+            if distance[i[0]] > cost:
                 distance[i[0]] = cost
                 heapq.heappush(q, (cost, i[0]))
-            
-                
+               
 dijkstra(start)
 
 for i in range(1, n + 1):

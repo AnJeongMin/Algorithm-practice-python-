@@ -1,4 +1,5 @@
 from random import randint
+from collections import deque
 import time
 
 start = time.time()
@@ -63,10 +64,56 @@ def quick_sort_py(arr):
     
     return quick_sort_py(left_side) + [pivot] + quick_sort_py(right_side)
 
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    mid = len(arr)//2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+
+    i, j = 0, 0
+    result = []
+
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    while i < len(left):
+        result.append(left[i])
+        i += 1
+    while j < len(right):
+        result.append(right[j])
+        j += 1
+
+    return result
+
+def heapify(arr, i, n):
+    l = i*2+1
+    r = l+1
+    idx = i
+
+    if l < n and arr[l] > arr[i]: idx = l
+    if r < n and arr[r] > arr[idx]: idx = r
+    if idx != i:
+        arr[i], arr[idx] = arr[idx], arr[i]
+        heapify(arr, idx, n)
+
+def heap_sort(arr):
+    n = len(arr)
+    for i in range(n-1, -1, -1):
+        heapify(arr, i, n-1)
+    for i in range(n-1, -1, -1):
+        arr[0], arr[i] = arr[i], arr[0]
+        heapify(arr, 0, i)
+    return arr
+
 # counting sort : O(n + k) -> k = max(array)
 def counting_sort(arr):
     count = [0] * (max(arr) + 1)
-    result = []
     for i in range(len(arr)):
         count[arr[i]] += 1
         
@@ -76,9 +123,30 @@ def counting_sort(arr):
             
     return result
 
+# radix sort : O(d * (n + k)) -> d = 최대 자리수, k = 10
+def radix_sort(arr):
+    qs = [deque() for _ in range(len(arr))]
+
+    max_v = max(arr)
+    q = deque(arr)
+    digit = 1
+
+    while max_v >= digit:
+        while q:
+            num = q.popleft()
+            qs[(num//digit)%10].append(num)
+        
+        for queue in qs:
+            while queue:
+                q.append(queue.popleft())
+
+        digit *= 10
+
+    return list(q)
+
 # print
 
-result = quick_sort_py(arr_rand)
+result = merge_sort(arr_rand)
 
 end = time.time()
 

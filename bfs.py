@@ -2,6 +2,7 @@ from collections import deque
 
 def bfs(graph, started, visited):
     queue = deque([started])
+    
     visited[started] = True
     while queue:
         v = queue.popleft()

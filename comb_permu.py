@@ -1,44 +1,48 @@
-def permutation(idx, depth):
-    if depth == len(arr):
-        temp = [x for x in list]
-        perm.append(temp)
-        return
-    
-    for i, val in enumerate(arr):
-        if not visited[i]:
-            visited[i] = True
-            list.append(val)
-            permutation(idx+1, depth+1)
-            list.pop()
-            visited[i] = False
+result = []
 
-def combination(idx, depth):
-    if depth == len(arr):
-        temp = [i for i in range(len(arr)) if visited[i]] 
-        comb.append(temp)
+def solution(orders, course):
+    global result
+    
+    answer = []
+    
+    for t in course:
+        dic = {}
+        for arr in orders:
+            visited = [False] * (len(orders[0]))
+            com(0, 0, sorted(list(arr)), visited, t)
+            for x in result:
+                if dic.get(x): dic[x] += 1
+                else: dic[x] = 1
+            result.clear()
+        temp = list(dic.items())
+        maxv = 2 # 2개 이상
+        candi = []
+        for x in temp:
+            if x[1] > maxv:
+                candi.clear()
+                candi.append(x[0])
+                maxv = x[1]
+            elif x[1] == maxv:
+                candi.append(x[0])
+        for y in candi: answer.append(y)
+        
+        answer.sort()
+    return answer
+
+def com(idx, depth, arr, visited, tar):
+    global result
+    
+    if depth == tar:
+        comb = [arr[i] for i in range(len(arr)) if visited[i] == True]
+        result.append("".join(comb))
         return
     
     for i in range(idx, len(arr)):
-        if not visited[i]:
+        if visited[i] == False:
             visited[i] = True
-            combination(i+1, depth+1)
+            com(i+1, depth+1, arr, visited, tar)
             visited[i] = False
 
-if __name__ == "__main__":
-    arr = [1, 2, 3, 4, 5, 6]
-
-    visited = [False] * 6
-
-    list = []
-    perm = []
-    comb = []
-
-    permutation(0, 3)
-    combination(0, 3)
-    for i in perm:
-        print(i)
-    print(len(perm))
-    print(" ")
-    for i in comb:
-        print(i)
-    print(len(comb))
+orders = ["XYZ", "ABCXY"]
+course = [2, 3, 4]
+print(solution(orders, course))

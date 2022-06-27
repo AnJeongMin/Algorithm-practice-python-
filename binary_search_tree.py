@@ -43,7 +43,7 @@ class BST():
 
     def delete(self, value):
         
-        node = bst.search(value)
+        node = self.search(value)
         if node == False:
             return False
         parent = node.parent

@@ -1,38 +1,30 @@
-def solve():
+from collections import deque
 
-    result = 0
-    visited = [[False] * n for _ in range(n)]
-    for i in range(n):
-        for j in range(n):
-            if not visited[i][j]:
-                now = arr[i][j]
-                q = [(j, i)]
-                visited[i][j] = True
-                while q:
-                    x, y = q.pop()
-                    for d in dir:
-                        dx, dy = x+d[0], y+d[1]
-                        if 0 <= dx < n and 0 <= dy < n:
-                            if not visited[dy][dx] and arr[dy][dx] == now:
-                                visited[dy][dx] = True
-                                q.append((dx, dy))
-                result += 1
-    return result
+def solution(q1, q2):
+    sum1, sum2 = sum(q1), sum(q2) # popleft, append only
+
+    cnt = 0
+    while sum1 != sum2:
+        if sum1 > sum2:
+            temp = q1.popleft()
+            sum1 -= temp
+            q2.append(temp)
+            sum2 += temp
+        elif sum1 < sum2:
+            temp = q2.popleft()
+            sum2 -= temp
+            q1.append(temp)
+            sum1 += temp
+        cnt += 1
+        if cnt > 1000000:
+            return -1
+
+    return cnt
 
 if __name__ == "__main__":
 
-    n = int(input())
-    arr = [list(input()) for _ in range(n)]
+    q1, q2 = deque(), deque()
+    q1.extend([1, 1])
+    q2.extend([1, 5])
 
-    dir = [(-1, 0), (0, -1), (1, 0), (0, 1)]
-
-    a = solve()
-
-    for i in range(n):
-        for j in range(n):
-            if arr[i][j] == "R" or arr[i][j] == "G":
-                arr[i][j] = "Y"
-
-    b = solve()
-
-    print(a, b)  
+    print(solution(q1, q2))

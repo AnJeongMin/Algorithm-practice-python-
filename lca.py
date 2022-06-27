@@ -10,7 +10,7 @@ graph = [[] for _ in range(n + 1)]
 for _ in range(n - 1):
     a, b = map(int, input().split())
     graph[a].append(b)
-    #graph[b].append(a)
+    graph[b].append(a)
 
 def dfs(x, depth):
     c[x] = True

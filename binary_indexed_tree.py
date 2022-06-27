@@ -7,7 +7,7 @@ arr = [0] * (n + 1)
 tree = [0] * (n + 1)
 
 def prefix_sum(i):
-    result = 0;
+    result = 0
     while i > 0:
         result += tree[i]
         i -= (i & -i)

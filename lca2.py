@@ -27,6 +27,7 @@ def dfs(x, depth):
 
 def set_parent():
     dfs(1, 0)
+    
     for i in range(1, LOG):
         for j in range(1, n + 1):
             parent[j][i] = parent[parent[j][i - 1]][i - 1]
